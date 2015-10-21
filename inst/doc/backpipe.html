@@ -10,7 +10,7 @@
 
 <meta name="author" content="Christopher Brown" />
 
-<meta name="date" content="2015-09-03" />
+<meta name="date" content="2015-09-14" />
 
 <title>Backpipe Operations</title>
 
@@ -28,24 +28,15 @@
 <div id="header">
 <h1 class="title">Backpipe Operations</h1>
 <h4 class="author"><em>Christopher Brown</em></h4>
-<h4 class="date"><em>2015-09-03</em></h4>
+<h4 class="date"><em>2015-09-14</em></h4>
 </div>
 
 
 <p>Popular packages <em>magrittr</em> and <em>pipeR</em> packages do not provide a backward piping operator. This package provides operators <code>%&lt;%</code> for use with <em>magrittr</em> and <code>%&lt;&lt;%</code> for use with <em>pipeR</em>. The package also provides the <code>backpipe</code>function for defining backpipe operators</p>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
-<p>Some structure are simply better expressed with right-to-left operations. This more common than one might expect. For example, right-to-left structures are better at representing (some) trees, directories and nested structures.<br />As an example, consider a directory structure. Typically files on a directory are described by starting at the root node, such as <code>/home/cbrown/docs/file</code>. To programattically assemble this using common pipe, one might code:</p>
-<pre><code>&quot;file&quot; %&gt;% file.path('docs') %&gt;% file.path('cbrown') %&gt;% file.path('home')</code></pre>
-<p>That is, forward-piping has forced a reversal of the natural ordering. The backpipe operators allows for a more natural and readable syntax:</p>
-<pre><code>file.path('home') %&lt;% file.path('cbrown') %&lt;% file.path('docs') %&lt;% &quot;file&quot;</code></pre>
-<p>As a second example, consider how <em>shiny</em> has the developer write code that produces HTML.</p>
-<pre><code>h1( &quot;content&quot;, role=&quot;heading&quot; )        %&gt;%
-  div( class=&quot;inner&quot;)                  %&gt;%
-    div( class=&quot;outer&quot;)                %&gt;% 
-      div( class=&quot;outer-outer&quot;)      
-  </code></pre>
-<p>This produces valid HTML:</p>
+<p>Some structure are simply better expressed with right-to-left operations. This more common than one might expect. For example, right-to-left structures are better at representing trees, directories and nested structures.</p>
+<p>As an example, consider how <strong>shiny</strong> has the developer write code that produces HTML. Let’s say you wished to produce the HTML:</p>
 <pre><code>&lt;div class=&quot;outer-outer&quot;&gt;
   &lt;div class=&quot;outer&quot;&gt;
     &lt;div class=&quot;inner&quot;&gt;
@@ -53,12 +44,27 @@
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt; </code></pre>
-<p>but illustrates two incongruities between code and output. The First is the aforemention reversal of order between code and output. This makes it hard to debug the generated HTML. The second problems is that code indentation no longer illustrate the nested structure of the output. In fact, writing cleaner <em>shiny</em> code was the motivation for the creation of the package. Using the backpipe operator the same code can be written as:</p>
+<p>HTML is ugly, but works. With <strong>shiny</strong>, you’d write:</p>
+<pre><code>div( class=&quot;outer-outer&quot;, 
+  div( class=&quot;outer&quot;,
+    div( class=&quot;inner&quot;,
+      h1( &quot;content&quot;, role=&quot;heading&quot; )
+    )
+  )
+)</code></pre>
+<p>Yuck!!! This is almost as ugly as the HTML. Using <strong>magrittr</strong> or <strong>pipeR</strong> this can be a little neater:</p>
+<pre><code>h1( &quot;content&quot;, role=&quot;heading&quot; )        %&gt;%
+  div( class=&quot;inner&quot;)                  %&gt;%
+    div( class=&quot;outer&quot;)                %&gt;% 
+      div( class=&quot;outer-outer&quot;)      
+  </code></pre>
+<p>That’s a little better and it produces the same HTML. It can still be better. The above example illustrates two incongruities between code and output. The first is a reversal of order between code and HTML output. HTML is ordered from outside-in. <strong>shiny</strong> has the developer write code inside-out. This makes debugging difficult expecially with complex code. If you haven’t done anything complex with <strong>shiny</strong> yet, you will. Don’t worry. The second problem is that code indentation no longer illustrate the nested structure of the HTML.</p>
+<p>The <strong>backpipe</strong> package and backpipe operators solve both of these dilemmas. In fact, writing cleaner <strong>shiny</strong> code was the impetus for this package, though its utility can be found when working with other things too. Using the backpipe operator the same code can be written as:</p>
 <pre><code>div( class=&quot;outer-outer&quot;)              %&lt;%
   div( class=&quot;outer&quot;)                  %&lt;% 
     div( class=&quot;inner&quot;)                %&lt;% 
       h1( &quot;content&quot;, role=&quot;heading&quot; ) </code></pre>
-<p>This much better matches the generated HTML output.</p>
+<p>Now, both the order of the tags and the nesting matches the outputed HTML. Your code is cleaner, more legible and debugging is easy. Your overall coding time is lessened. With the time you save, you can join me at the pub and buy me a beer. I’m already there. I used <strong>backpipe</strong>. My <strong>shiny</strong> code was done hours ago.</p>
 </div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
