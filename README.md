@@ -1,20 +1,31 @@
 # Backpipe
 
-[![License](https://img.shields.io/badge/license-GPL%20=%202-brightgreen.svg?style=flat)](https://www.gnu.org/licenses/gpl-2.0.html) 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/backpipe)](https://cran.r-project.org/package=backpipe)
-[![Downloads](https://cranlogs.r-pkg.org/badges/backpipe?color=brightgreen)](http://www.r-pkg.org/pkg/backpipe)
+<!--
+[![License](https://img.shields.io/badge/license-GPL=2-brightgreen.svg?style=flat)](https://www.gnu.org/licenses/gpl-2.0.html)
+-->
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/backpipe)](https://cran.r-project.org/package=backpipe)
+[![Downloads](https://cranlogs.r-pkg.org/badges/backpipe?color=brightgreen)](https://www.r-pkg.org/pkg/backpipe)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/backpipe)](https://cran.r-project.org/package=backpipe)
+https://img.shields.io/badge/license-GPL%20=%202-brightgreen.svg?style=flat
+<!--
+[![Research Software Impact](http://depsy.org/api/package/cran/backpipe/badge.svg)](http://depsy.org/package/r/backpipe)
+-->
 
-
-The backpipe package provides a single 'backpipe" operator (`%<%`) that allows
-the order of operands in a pipe statuement to be inverted. In some
-situations this promotes more legible, interpretable and debuggable code. 
+The *backpipe* package provides a single 'backpipe' operator (`%<%`) that allows
+the order of operands in a pipe statuement to be reversed. In some
+situations this promotes more legible and debuggable code. 
 
 Popular packages *magrittr* and *pipeR* do not provide a backward pipe operator. 
-This package files the void by providing a `%<%` for use with *magrittr* and 
+This package fills the void by providing a `%<%` for use with *magrittr* and 
 `%<<%` for use with *pipeR*. 
 
-The package also provides the `backpipe`function for defining backpipe operators 
-for any forward pipe implementation
+An RStudio addin (`insert_backpipe _addin`) provides for inserting the
+backpipe operator at the cursor location. It is recommended that this be bound 
+to the `CTRL + SHIFT + <` keyboard shortcut. This can be accomplished in RStudio
+from the **Tools > Modify Keyboard Shortcuts** menu.
+
+The package provides the `backpipe`function for defining backpipe operators 
+for any forward pipe implementation.
 
 
 ## Installation
@@ -39,19 +50,30 @@ for any forward pipe implementation
     # MULTIPLE STEPS
     mean %<% range %<% 1:5
      
-    # WITH FORWARD PIPE
+    # WITH FORWARD PIPE: 
     # Although technically possible, don't do this
-    add(1) %<% 1:5 %>% multiply_by(2)
+    add(1) %<% 1:5 %>% multiply_by(2)   # same as 1:5 %>% add(1) %>% multiply_by(2)
+
+
+### Keyboard Binding 
+
+A rstudio addin is included with the package, 'insert_backpipe_addin()` which 
+can be mapped to an rstudio shortcut. It is recommended that this be bound to 
+**CTRL + SHIFT + <**
 
 
 ## Common Use Cases
 
 **backpipe** can be used to:
 
-* write clearer, more debuggable shiny UI code such that the order of code 
+* write clearer, more debuggable shinyUI code such that the order of code 
 matches the HTML output.
 
+    div()  %<% p("This is some text")
+
 * write test and assertions where the test condition is listed first. 
+
+   assert_equal(1) %<% 1
 
 
 ## Motivation
@@ -80,7 +102,7 @@ HTML is ugly, but works.  To generate this code using **shiny**, you'd write:
       )
     )
 
-Yuck!!! This is almost as ugly as the HTML.  **magrittr** or **pipeR**
+Yuck!!! This is uglier than HTML.  **magrittr** or **pipeR**
 allows this can to be cleaner:
 
     h1( "content", role="heading" )        %>%
@@ -112,7 +134,8 @@ it, can be used to clarify code in other common operations.  I am looking at you
 
 ## Technical Implementation
 
-The backpipe operators are implemented as a simple reording of arguments. See the `backpipe` code for more details.
+The backpipe operators are implemented as a simple reording of arguments. See 
+the `backpipe` code for more details.
 
 
 ## References
@@ -120,6 +143,3 @@ The backpipe operators are implemented as a simple reording of arguments. See th
  * [Relevant magrittr issue #26](https://github.com/smbache/magrittr/issues/26)
 
  * [Stackoverflow: Is Right-to-left Operator Associativity in R Possible ](http://stackoverflow.com/questions/31305342/is-right-to-left-operator-associativity-in-r-possible)
-
-
-

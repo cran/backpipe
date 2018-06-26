@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Christopher Brown" />
 
-<meta name="date" content="2016-10-03" />
+<meta name="date" content="2018-06-25" />
 
 <title>Backpipe Operations</title>
 
@@ -32,21 +32,35 @@
 
 <h1 class="title toc-ignore">Backpipe Operations</h1>
 <h4 class="author"><em>Christopher Brown</em></h4>
-<h4 class="date"><em>2016-10-03</em></h4>
+<h4 class="date"><em>2018-06-25</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#cran-release">CRAN (release)</a></li>
+<li><a href="#github-devel">Github (devel)</a></li>
+</ul></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#keyboard-shortcut">Keyboard Shortcut</a></li>
+<li><a href="#common-use-cases">Common Use Cases</a></li>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#technical-implementation">Technical Implementation</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
 
 <p>The backpipe package provides a single ’backpipe&quot; operator (<code>%&lt;%</code>) that allows the order of operands in a pipe statuement to be inverted. In some situations this promotes more legible, interpretable and debuggable code.</p>
 <p>Popular packages <em>magrittr</em> and <em>pipeR</em> do not provide a backward pipe operator. This package files the void by providing a <code>%&lt;%</code> for use with <em>magrittr</em> and <code>%&lt;&lt;%</code> for use with <em>pipeR</em>.</p>
 <p>The package also provides the <code>backpipe</code>function for defining backpipe operators for any forward pipe implementation</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<div id="cran" class="section level3">
-<h3>CRAN</h3>
+<div id="cran-release" class="section level3">
+<h3>CRAN (release)</h3>
 <pre><code>install.packages('backpipe')</code></pre>
 </div>
-<div id="github" class="section level3">
-<h3>Github</h3>
+<div id="github-devel" class="section level3">
+<h3>Github (devel)</h3>
 <pre><code>library(devtools)
 install_github(&quot;decisionpatterns/backpipe&quot;)</code></pre>
 </div>
@@ -57,19 +71,30 @@ install_github(&quot;decisionpatterns/backpipe&quot;)</code></pre>
 mean %&lt;%  1:5   # magrittr
 mean %&lt;&lt;% 1:5   # pipeR
  
-# MULTIPLE STEPS
+# CHAINING 
 mean %&lt;% range %&lt;% 1:5
  
-# WITH FORWARD PIPE
-# Although technically possible, don't do this
-add(1) %&lt;% 1:5 %&gt;% multiply_by(2)</code></pre>
+# CHAINING WITH MIXED PIPES
+# Chained with mixed pipes are performed left-to-right
+# Although technically possible, this is probably a bad idea.
+add(1) %&lt;% 1:5 %&gt;% multiply_by(2)
+1:5 %&gt;% add(1) %&gt;% multiply_by(2)  # same</code></pre>
+</div>
+<div id="keyboard-shortcut" class="section level2">
+<h2>Keyboard Shortcut</h2>
+<p>The <code>insert_backpipe</code> function can be bound to a keyboard shortcut. We recommend: <code>CTRL + SHIFT + &lt;</code></p>
+<p>This can be done through RStudio’s <strong>Tools &gt; Modify Keyboard Shortcuts</strong> menu. Future versions of this package may do this automatically.</p>
 </div>
 <div id="common-use-cases" class="section level2">
 <h2>Common Use Cases</h2>
 <p><strong>backpipe</strong> can be used to:</p>
 <ul>
-<li><p>write clearer, more debuggable shiny UI code such that the order of code matches the HTML output.</p></li>
-<li><p>write test and assertions where the test condition is listed first.</p></li>
+<li><p>Write clearer, more debuggable shinyUI code such that the order of code matches the HTML output.</p>
+<pre><code> div() %&lt;% p %&lt;% &quot;Hello World&quot;</code></pre></li>
+<li><p>write tests, assertions, logging statements, etc. where the command is listed first</p>
+<pre><code>warn %&lt;% &quot;there is a problem here&quot;  # OR 
+expect_true() %&lt;% (ans==1)          # OR  
+log_warn %&lt;% &quot;This didn't work&quot;</code></pre></li>
 </ul>
 </div>
 <div id="motivation" class="section level2">
@@ -124,7 +149,7 @@ add(1) %&lt;% 1:5 %&gt;% multiply_by(2)</code></pre>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
